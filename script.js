@@ -1,3 +1,4 @@
+// appendDecimal() 関数の 2 回定義を修正
 function appendDecimal() {
     var screen = document.getElementById("currentOperationScreen");
     var currentNumber = screen.textContent;
