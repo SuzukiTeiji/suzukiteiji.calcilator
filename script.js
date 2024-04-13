@@ -3,7 +3,10 @@ function clearScreen() {
 }
 
 function appendDecimal() {
-    // Decimal logic goes here
+    var currentScreen = document.getElementById('currentOperationScreen').innerText;
+    if (!currentScreen.includes('.')) {
+        document.getElementById('currentOperationScreen').innerText += '.';
+    }
 }
 
 function appendDigit(digit) {
@@ -15,43 +18,40 @@ function appendDigit(digit) {
     }
 }
 
+function calculateResult() {
+    var expression = document.getElementById('currentOperationScreen').innerText;
+    var result = evaluateExpression(expression);
+    document.getElementById('currentOperationScreen').innerText = result;
+}
 
+function evaluateExpression(expression) {
+    try {
+        return Function('return ' + expression)();
+    } catch (error) {
+        return 'Error';
+    }
+}
 
+// Add event listener to equals button (=)
+document.getElementById("equals").addEventListener("click", calculateResult);
 
-// // appendDecimal() 関数の 2 回定義を修正
-// function appendDecimal() {
-//     var screen = document.getElementById("currentOperationScreen");
-//     var currentNumber = screen.textContent;
+// Add event listeners to digit buttons (0-9)
+for (let i = 0; i <= 9; i++) {
+    document.getElementById(`digit${i}`).addEventListener("click", () => {
+        appendDigit(i);
+    });
+}
 
-//     // すでに小数点が存在する場合や最初の数値が入力されていない場合は何もしない
-//     if (currentNumber.includes(".") || currentNumber === "0") {
-//         return;
-//     }
-
-//     // 小数点を追加して画面に表示
-//     screen.textContent += ".";
-// }
-
-// // Add event listener to equals button (=)
-// document.getElementById("equals").addEventListener("click", calculateResult);
-
-// // Add event listeners to digit buttons (0-9)
-// for (let i = 0; i <= 9; i++) {
-//     document.getElementById(`digit${i}`).addEventListener("click", () => {
-//         appendToScreen(i);
-//     });
-// }
-
-// // Add event listeners to operator buttons (+, -, ×, ÷)
-// document.getElementById("add").addEventListener("click", () => {
-//     appendToScreen("+");
-// });
-// document.getElementById("subtract").addEventListener("click", () => {
-//     appendToScreen("-");
-// });
-// document.getElementById("multiply").addEventListener("click", () => {
-//     appendToScreen("×");
-// });
-// document.getElementById("divide").addEventListener("click", () => {
-//     appendToScreen("÷");
-// });
+// Add event listeners to operator buttons (+, -, ×, ÷)
+document.getElementById("add").addEventListener("click", () => {
+    appendOperator("+");
+});
+document.getElementById("subtract").addEventListener("click", () => {
+    appendOperator("-");
+});
+document.getElementById("multiply").addEventListener("click", () => {
+    appendOperator("*");
+});
+document.getElementById("divide").addEventListener("click", () => {
+    appendOperator("/");
+});
